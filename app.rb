@@ -40,3 +40,20 @@ end
 get '/contacts' do
 	erb :contacts
 end
+
+
+post '/contacts' do
+	@username = params[:username]
+	@usermail = params[:usermail]
+	@feedback = params[:feedback]
+
+	@title = 'Thank you!'
+	@message = "Dear #{@username}, thank you for your feedback"	
+
+	f = File.open './public/feedback.txt', 'a'
+	f.write "User: #{@username}, Usermail: #{@usermail}, Feedback: #{@feedback}"
+	f.close
+
+	erb :message
+
+end
