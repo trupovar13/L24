@@ -1,6 +1,9 @@
 require 'rubygems'
 require 'sinatra'
 require 'sinatra/reloader'
+require 'Pony'
+require 'haml'
+
 
 get '/' do
 	erb "Hello! <a href=\"https://github.com/bootstrap-ruby/sinatra-bootstrap\">Original</a> pattern has been modified for <a href=\"http://rubyschool.us/\">Ruby School</a>"			
@@ -39,6 +42,7 @@ end
 
 get '/contacts' do
 	erb :contacts
+
 end
 
 
@@ -56,6 +60,25 @@ post '/contacts' do
 	if @error != ''
 		return erb :contacts
 	end
+
+	Pony.mail(
+   :username => params[:username],
+  :usermail => params[:usermail],
+  :feedback => params[:feedback],
+  :to => 'trupovar13@gmail.com',
+  :subject => params[:username] + " has contacted you",
+  :feedback => params[:feedback],
+  :port => '587',
+  :via => :smtp,
+  :via_options => { 
+    :address              => 'smtp.gmail.com', 
+    :port                 => '587', 
+    :enable_starttls_auto => true, 
+    :user_name            => 'trupovar13@gmail.com', 
+    :password             => '', 
+    :authentication       => :plain, 
+    :domain               => 'localhost.localdomain'
+  })
 
 	@title = 'Thank you!'
 	@message = "Dear #{@username}, thank you for your feedback"	
