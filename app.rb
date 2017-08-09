@@ -47,6 +47,16 @@ post '/contacts' do
 	@usermail = params[:usermail]
 	@feedback = params[:feedback]
 
+	hh = { 	:username => 'Введите имя',
+			:usermail => 'Введите адрес почтового ящика',
+			:feedback => 'Введите текст' }
+
+	@error = hh.select {|key,_| params[key] == ""}.values.join(", ")
+
+	if @error != ''
+		return erb :contacts
+	end
+
 	@title = 'Thank you!'
 	@message = "Dear #{@username}, thank you for your feedback"	
 
